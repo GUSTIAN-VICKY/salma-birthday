@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+
+# OS System Files
+.DS_Store
+Thumbs.db
+
+# Internal scripts
+scripts/
+
+# Raw video files (>100MB exceeds GitHub limit)
+*.MOV
+*.mov
+
+# Raw original camera photos (website uses public/uploads and public/picture/birthday_cake_3d.jpg)
+public/picture/*
+!public/picture/birthday_cake_3d.jpg

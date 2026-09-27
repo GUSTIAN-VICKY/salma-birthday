@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Salma 🎂</title>
+  <meta name="description" content="Selamat Ulang Tahun Salma Salsabila Rahma — sebuah kartu cinta untukmu." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+  <!-- NOISE TEXTURE OVERLAY -->
+  <div class="noise-overlay"></div>
+
+  <!-- CANVAS BACKGROUND -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- BLURRED BACKGROUND FIREWORKS CANVAS -->
+  <canvas id="confettiCanvas" class="fireworks-bg-canvas"></canvas>
+
+  <!-- BLOB BACKGROUNDS -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <!-- FLOATING PARTICLES CONTAINER -->
+  <div id="particles" aria-hidden="true"></div>
+
+  <!-- ══ COVER SCREEN ══════════════════════════════════════════════════════ -->
+  <div id="cover" role="button" tabindex="0" aria-label="Buka kartu ulang tahun">
+    <div class="cover-inner">
+      <div class="cover-ring ring-1"></div>
+      <div class="cover-ring ring-2"></div>
+      <div class="cover-ring ring-3"></div>
+      <div class="cover-card-3d">
+        <div class="cover-front">
+          <span class="cover-emoji">💌</span>
+          <h2 class="cover-title">Ada sesuatu untukmu</h2>
+          <p class="cover-name" id="coverName">Salma</p>
+          <div class="cover-cta">
+            <span>Ketuk untuk membuka</span>
+            <div class="cta-arrow">↓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cover-bg-text" aria-hidden="true">HAPPY BIRTHDAY</div>
+  </div>
+
+  <!-- ══ APP ════════════════════════════════════════════════════════════════ -->
+  <div id="app" aria-hidden="true">
+
+    <!-- NAV -->
+    <nav id="navbar">
+      <div class="nav-logo">✨ Salma's Day</div>
+      <div class="nav-links">
+        <a href="#hero"      class="nav-link">Home</a>
+        <a href="#message"   class="nav-link">Pesan</a>
+        <a href="#wishes"    class="nav-link">Doa</a>
+        <a href="#gallery"   class="nav-link">Galeri</a>
+        <a href="#letter"    class="nav-link nav-link-special">💌 Letter</a>
+      </div>
+      <button class="nav-hamburger" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+    <div class="nav-mobile-menu" id="mobileMenu">
+      <a href="#hero"      class="mobile-link">Home</a>
+      <a href="#message"   class="mobile-link">Pesan</a>
+      <a href="#wishes"    class="mobile-link">Doa & Harapan</a>
+      <a href="#gallery"   class="mobile-link">Galeri</a>
+      <a href="#letter"    class="mobile-link">💌 Love Letter</a>
+    </div>
+
+    <!-- ── HERO ─────────────────────────────────────────────────────────── -->
+    <section id="hero">
+      <div class="hero-content">
+        <div class="hero-badge reveal">🎉 Special Day 🎉</div>
+        <p class="hero-pre reveal" style="--delay:0.1s">Untuk yang paling istimewa —</p>
+        <h1 class="hero-name reveal" style="--delay:0.2s" id="heroName">
+          Salma Salsabila<br /><span>Rahma</span>
+        </h1>
+        <p class="hero-sub reveal" style="--delay:0.3s">
+          <span id="typewriter"></span><span class="cursor">|</span>
+        </p>
+        <div class="hero-cake-wrap reveal" style="--delay:0.4s" id="heroCakeInteractive" title="Klik kue untuk tiup lilin & rayakan! ✨">
+          <div class="cake-glow-halo"></div>
+          <div class="cake-art-frame">
+            <img src="picture/birthday_cake_3d.jpg" alt="Kue Ulang Tahun Salma ke-25" class="hero-cake-img" />
+            <div class="cake-light-shimmer"></div>
+          </div>
+          <div class="cake-orbit-sparks">
+            <span class="spark spark-1">✨</span>
+            <span class="spark spark-2">💖</span>
+            <span class="spark spark-3">🌸</span>
+            <span class="spark spark-4">⭐</span>
+          </div>
+        </div>
+        <div class="hero-actions reveal" style="--delay:0.5s">
+          <button class="btn-primary" id="celebrateBtn">
+            <span class="btn-icon">🎊</span> Rayakan!
+          </button>
+          <a href="#message" class="btn-secondary">Baca Pesan</a>
+        </div>
+        <div class="hero-age reveal" style="--delay:0.6s" id="heroAge">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MESSAGE ───────────────────────────────────────────────────────── -->
+    <section id="message" class="section">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">💝 Pesan dari Hati</span>
+        <h2 class="section-title">Untukmu, Salma</h2>
+      </div>
+      <div class="message-wrapper reveal" style="--delay:0.15s">
+        <div class="message-card">
+          <div class="message-deco-top">
+            <span>🌸</span><span>💕</span><span>🌸</span>
+          </div>
+          <blockquote class="message-body">
+            <p>Hei, <strong>Salma Salsabila Rahma</strong> — gadis yang selalu berhasil membuatku tersenyum tanpa alasan yang jelas.</p>
+            <p>Hari ini adalah hari yang sangat spesial. Bukan hanya karena kamu bertambah usia, tapi karena hari ini menandai satu tahun lagi hidupmu yang luar biasa — dan aku sangat bersyukur bisa menjadi bagian dari perjalananmu.</p>
+            <p>Senyummu itu, tahu tidak? — selalu menjadi hal pertama yang aku rindukan. Tawa kecilmu yang menggemaskan, cara kamu memandang dunia dengan penuh rasa ingin tahu, semangat yang kamu pancarkan... semuanya adalah hal-hal yang aku kagumi dari dirimu setiap hari.</p>
+            <p>Di usiamu yang baru ini, semoga semua pintu yang pernah tertutup mulai terbuka. Semoga mimpi-mimpimu bukan lagi sekedar mimpi. Semoga kamu semakin bahagia, semakin bersinar, dan semakin menjadi versi terbaik dari dirimu sendiri.</p>
+            <p><strong>Aku sayang kamu ❤️ — lebih dari yang bisa aku ungkapkan dengan kata-kata.</strong></p>
+          </blockquote>
+          <div class="message-signature">
+            <span id="msgSender">— dari orang yang paling menyayangimu 💕</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── WISHES ────────────────────────────────────────────────────────── -->
+    <section id="wishes" class="section">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">🌟 Doa & Harapan</span>
+        <h2 class="section-title">Semua yang Terbaik Untukmu</h2>
+      </div>
+      <div class="wishes-grid">
+        <div class="wish-card reveal" style="--delay:0s">
+          <div class="wish-icon-wrap"><span>🌟</span></div>
+          <h3>Kesehatan</h3>
+          <p>Semoga tubuh dan jiwamu selalu sehat, kuat, dan penuh energi untuk menjalani setiap harinya.</p>
+        </div>
+        <div class="wish-card reveal" style="--delay:0.08s">
+          <div class="wish-icon-wrap"><span>💫</span></div>
+          <h3>Impian Terwujud</h3>
+          <p>Semua cita-cita dan impianmu terwujud satu per satu — lebih indah dari yang kamu bayangkan.</p>
+        </div>
+        <div class="wish-card reveal" style="--delay:0.16s">
+          <div class="wish-icon-wrap"><span>🌺</span></div>
+          <h3>Cinta yang Tulus</h3>
+          <p>Semoga kamu selalu dikelilingi orang-orang yang mencintai dan menghargai dirimu.</p>
+        </div>
+        <div class="wish-card reveal" style="--delay:0.24s">
+          <div class="wish-icon-wrap"><span>🦋</span></div>
+          <h3>Kebebasan Jiwa</h3>
+          <p>Semoga kamu bebas menjadi dirimu sendiri, tanpa beban dan penuh keberanian.</p>
+        </div>
+        <div class="wish-card reveal" style="--delay:0.32s">
+          <div class="wish-icon-wrap"><span>🌙</span></div>
+          <h3>Kedamaian Hati</h3>
+          <p>Semoga hatimu selalu tenang, jauh dari segala kesedihan dan kegelisahan.</p>
+        </div>
+        <div class="wish-card reveal" style="--delay:0.4s">
+          <div class="wish-icon-wrap"><span>🚀</span></div>
+          <h3>Kesuksesan</h3>
+          <p>Semoga masa depanmu secerah bintang — penuh prestasi dan pencapaian yang membanggakan.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── GALLERY / AUTO-SLIDING PHOTO COLLAGE ───────────────────────── -->
+    <section id="gallery" class="section gallery-section">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">📸 Galeri Kenangan</span>
+        <h2 class="section-title">Kolase Momen Bersamamu</h2>
+        <p class="section-desc">Ratusan potret senyuman, tawa, dan rasa cinta yang mengalir tiada henti 💕</p>
+      </div>
+
+
+      <!-- Auto-sliding multi-row infinite collage marquee -->
+      <div id="slidingCollage" class="sliding-collage-wrap reveal">
+        <!-- Row 1: Leftward slide -->
+        <div class="collage-row row-left" id="collageRow1">
+          <div class="collage-track" id="track1"></div>
+        </div>
+        <!-- Row 2: Rightward slide -->
+        <div class="collage-row row-right" id="collageRow2">
+          <div class="collage-track" id="track2"></div>
+        </div>
+        <!-- Row 3: Leftward slide -->
+        <div class="collage-row row-left" id="collageRow3">
+          <div class="collage-track" id="track3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── LOVE LETTER ───────────────────────────────────────────────────── -->
+    <section id="letter" class="section">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">🔐 Secret</span>
+        <h2 class="section-title">Love Letter</h2>
+        <p class="section-desc">Hanya untuk Salma — masukkan password untuk membuka surat rahasia ini.</p>
+      </div>
+
+      <div id="letterLocked" class="letter-locked reveal" style="--delay:0.1s">
+        <div class="lock-icon">🔐</div>
+        <h3>Surat Rahasia</h3>
+        <p>Surat ini dikunci khusus untuk Salma.<br>Masukkan password untuk membacanya.</p>
+        <form id="letterForm">
+          <div class="password-input-wrap">
+            <input type="password" id="letterPassword" placeholder="Masukkan password..." />
+            <button type="button" id="togglePwd" class="toggle-pwd">👁</button>
+          </div>
+          <button type="submit" class="btn-primary">
+            <span>💌</span> Buka Surat
+          </button>
+        </form>
+        <div id="letterError" class="letter-error hidden">Password salah, coba lagi! 🔐</div>
+      </div>
+
+      <div id="letterContent" class="letter-content hidden reveal">
+        <!-- filled by JS -->
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-hearts">💕 💖 💝 💗 💕</div>
+      <p class="footer-text">Dibuat dengan cinta yang tak terhingga ✨</p>
+      <p class="footer-sub" id="footerYear"></p>
+    </footer>
+
+  </div><!-- /#app -->
+
+
+  <!-- BACKGROUND MUSIC (Auto-plays when letter/cover is opened) -->
+  <audio id="bgAudio" loop preload="auto">
+    <source src="audio/birthday_music.mp3" type="audio/mpeg" />
+    <source src="audio/birthday_music.m4a" type="audio/mp4" />
+    <source src="Happy%20Birthday%20to%20You.mp4" type="video/mp4" />
+  </audio>
+
+  <!-- ══ CELEBRATION POPUP CARD (Harapan & Doa) ═════════════════════════════ -->
+  <div id="celebrationModal" class="celebrate-modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="celebrate-modal-backdrop" id="celebrateBackdrop"></div>
+    <div class="celebrate-modal-card">
+      <button class="celebrate-modal-close" id="closeCelebrateModal" title="Tutup" aria-label="Tutup">✕</button>
+      
+      <div class="celebrate-card-header">
+        <div class="celebrate-badge-chip">🎉 25th Birthday Milestone ✨</div>
+        <h3 class="celebrate-card-title" id="celebrateCardTitle">Harapan & Doa Terindah untuk Salma</h3>
+        <p class="celebrate-card-sub" id="celebrateCardSub">Di usiamu yang ke-25 tahun ini 💕</p>
+      </div>
+
+      <div class="celebrate-wishes-list" id="celebrateWishesList">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="celebrate-card-closing">
+        <p class="closing-quote" id="celebrateClosing">
+          "Selamat ulang tahun ke-25, Salma Salsabila Rahma. Semoga tahun ini menjadi babak terindah dalam hidupmu!" 🎂💕
+        </p>
+        <span class="closing-sign" id="celebrateSignature">— Dari seseorang yang selalu mencintaimu 💕</span>
+      </div>
+
+      <div class="celebrate-card-actions">
+        <button class="btn-primary celebrate-confirm-btn" id="confirmCelebrateBtn">
+          <span>🤲</span> Aamiin ya Rabbal Alamin
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer" aria-live="polite"></div>
+
+  <script src="js/particles.js"></script>
+  <script src="js/confetti.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
