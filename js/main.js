@@ -128,44 +128,51 @@ function updateActiveNav() {
    ═══════════════════════════════════════════════════════════════════════════ */
 let config = { salmaName: 'Salma Salsabila Rahma', birthday: '2002-09-27', senderName: 'Seseorang yang Mencintaimu' };
 
+function applyConfig(data) {
+  config = data;
+  const firstName = (data.salmaName || 'Salma').split(' ')[0];
+  const coverName = document.getElementById('coverName');
+  if (coverName) coverName.textContent = firstName;
+
+  // Hero age line (Salma is turning 25)
+  const bday = new Date(data.birthday || '2001-09-27');
+  const now = new Date();
+  const calculatedAge = now.getFullYear() - bday.getFullYear()
+    - (now < new Date(now.getFullYear(), bday.getMonth(), bday.getDate()) ? 1 : 0);
+  const age = data.age || calculatedAge || 25;
+  const heroAge = document.getElementById('heroAge');
+  if (heroAge) heroAge.innerHTML = `🎂 <strong style="color:var(--pink);font-weight:700;">${age} tahun</strong> yang luar biasa ✨`;
+
+  const msgSender = document.getElementById('msgSender');
+  if (msgSender) msgSender.textContent = `— ${data.senderName || 'Seseorang yang Mencintaimu'} 💕`;
+}
+
 fetch(`${API}/config`)
-  .then(r => r.json())
-  .then(data => {
-    config = data;
-    const firstName = data.salmaName.split(' ')[0];
-    const coverName = document.getElementById('coverName');
-    if (coverName) coverName.textContent = firstName;
+  .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+  .then(applyConfig)
+  .catch(() => {
+    fetch('data/config.json')
+      .then(r => r.json())
+      .then(applyConfig)
+      .catch(() => applyConfig(config));
+  });
 
-    // Hero age line (Salma is turning 25)
-    const bday = new Date(data.birthday);
-    const now = new Date();
-    const calculatedAge = now.getFullYear() - bday.getFullYear()
-      - (now < new Date(now.getFullYear(), bday.getMonth(), bday.getDate()) ? 1 : 0);
-    const age = data.age || calculatedAge || 25;
-    const heroAge = document.getElementById('heroAge');
-    if (heroAge) heroAge.innerHTML = `🎂 <strong style="color:var(--pink);font-weight:700;">${age} tahun</strong> yang luar biasa ✨`;
-
-    const msgSender = document.getElementById('msgSender');
-    if (msgSender) msgSender.textContent = `— ${data.senderName} 💕`;
-
-    // Interactive 3D birthday cake
-    const heroCake = document.getElementById('heroCakeInteractive');
-    heroCake?.addEventListener('click', () => {
-      const rect = heroCake.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      for (let i = 0; i < 8; i++) {
-        setTimeout(() => {
-          spawnFlyingHeart(cx + (Math.random() - 0.5) * 100, cy + (Math.random() - 0.5) * 100);
-        }, i * 80);
-      }
-      if (window.Confetti?.burst) {
-        window.Confetti.burst(cx, cy, 35);
-      }
-      toast('Tiup lilin & panjatkan doa terbaikmu, Salma! 🎂✨', 'success');
-    });
-  })
-  .catch(() => {});
+// Interactive 3D birthday cake
+const heroCake = document.getElementById('heroCakeInteractive');
+heroCake?.addEventListener('click', () => {
+  const rect = heroCake.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  for (let i = 0; i < 8; i++) {
+    setTimeout(() => {
+      spawnFlyingHeart(cx + (Math.random() - 0.5) * 100, cy + (Math.random() - 0.5) * 100);
+    }, i * 80);
+  }
+  if (window.Confetti?.burst) {
+    window.Confetti.burst(cx, cy, 35);
+  }
+  toast('Tiup lilin & panjatkan doa terbaikmu, Salma! 🎂✨', 'success');
+});
 
 /* ═══════════════════════════════════════════════════════════════════════════
    TYPEWRITER
@@ -277,13 +284,21 @@ function renderWishesCard(data) {
 
 function loadWishesCard() {
   fetch(`${API}/wishes-card`)
-    .then(r => r.json())
+    .then(r => { if (!r.ok) throw new Error(); return r.json(); })
     .then(data => {
       wishesCardData = data;
       renderWishesCard(data);
     })
     .catch(() => {
-      renderWishesCard(getDefaultWishesCard());
+      fetch('data/wishes_card.json')
+        .then(r => r.json())
+        .then(data => {
+          wishesCardData = data;
+          renderWishesCard(data);
+        })
+        .catch(() => {
+          renderWishesCard(getDefaultWishesCard());
+        });
     });
 }
 
@@ -394,23 +409,31 @@ function shuffleArray(arr) {
 
 function loadGallery() {
   const track1 = document.getElementById('track1');
-  const track2 = document.getElementById('track2');
-  const track3 = document.getElementById('track3');
   if (!track1) return;
 
+  function processGallery(items) {
+    if (!Array.isArray(items)) return;
+    const rawPhotos = items.filter(it => it.type === 'image' || !it.type || /\.(jpg|jpeg|png|webp|gif)$/i.test(it.url || it.filename || ''));
+    // Ensure relative URL for GitHub Pages / static hosting compatibility
+    rawPhotos.forEach(p => {
+      if (p.url && p.url.startsWith('/')) {
+        p.url = p.url.replace(/^\/+/, '');
+      }
+    });
+    galleryPhotos = shuffleArray(rawPhotos);
+    if (!galleryPhotos.length) return;
+    distributeAndRenderTracks(galleryPhotos);
+  }
+
   fetch(`${API}/gallery`)
-    .then(r => r.json())
-    .then(items => {
-      // Filter images & randomize/shuffle from all photos in the folder
-      const rawPhotos = items.filter(it => it.type === 'image' || !it.type || /\.(jpg|jpeg|png|webp|gif)$/i.test(it.url || it.filename || ''));
-      galleryPhotos = shuffleArray(rawPhotos);
-
-      if (!galleryPhotos.length) return;
-
-      // Distribute photos into 3 tracks
-      distributeAndRenderTracks(galleryPhotos);
-    })
-    .catch(() => {});
+    .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+    .then(processGallery)
+    .catch(() => {
+      fetch('data/gallery.json')
+        .then(r => r.json())
+        .then(processGallery)
+        .catch(() => {});
+    });
 }
 
 function distributeAndRenderTracks(photos) {
@@ -569,26 +592,17 @@ togglePwd?.addEventListener('click', () => {
 
 document.getElementById('letterForm')?.addEventListener('submit', async e => {
   e.preventDefault();
-  const password = letterPwd.value;
+  const password = (letterPwd.value || '').trim();
   const errEl = document.getElementById('letterError');
 
-  try {
-    const res = await fetch(`${API}/love-letter`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password })
-    });
+  function showError() {
+    errEl.classList.remove('hidden');
+    letterPwd.style.borderColor = 'var(--rose)';
+    setTimeout(() => { errEl.classList.add('hidden'); letterPwd.style.borderColor = ''; }, 3000);
+  }
 
-    if (!res.ok) {
-      errEl.classList.remove('hidden');
-      letterPwd.style.borderColor = 'var(--rose)';
-      setTimeout(() => { errEl.classList.add('hidden'); letterPwd.style.borderColor = ''; }, 3000);
-      return;
-    }
-
-    const data = await res.json();
+  function unlockLetter(data) {
     document.getElementById('letterLocked').style.display = 'none';
-
     const contentEl = document.getElementById('letterContent');
     contentEl.classList.remove('hidden');
     contentEl.innerHTML = `
@@ -603,8 +617,41 @@ document.getElementById('letterForm')?.addEventListener('submit', async e => {
     playMusic();
     Confetti.burst(null, null, 40);
     toast('💌 Surat terbuka! Ini hanya untukmu, Salma.', 'success', 5000);
+  }
+
+  try {
+    const res = await fetch(`${API}/love-letter`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password })
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      unlockLetter(data);
+      return;
+    } else if (res.status === 401) {
+      showError();
+      return;
+    }
   } catch {
-    toast('Server tidak tersedia.', 'error');
+    // API server not present (GitHub Pages static mode)
+  }
+
+  // Static Fallback for GitHub Pages
+  if (password.toLowerCase() === 'salmasayang') {
+    try {
+      const res = await fetch('data/letter.json');
+      const data = await res.json();
+      unlockLetter(data);
+    } catch {
+      unlockLetter({
+        content: "Hei Salma Salsabila Rahma yang paling cantik...\nSelamat ulang tahun ke-25! ❤️",
+        from: "Seseorang yang Selalu Mencintaimu 💕"
+      });
+    }
+  } else {
+    showError();
   }
 });
 

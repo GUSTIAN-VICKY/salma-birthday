@@ -19,6 +19,8 @@ scripts/
 *.MOV
 *.mov
 
-# Raw original camera photos (website uses public/uploads and public/picture/birthday_cake_3d.jpg)
+# Raw original camera photos (website uses uploads and picture/birthday_cake_3d.jpg)
+picture/*
+!picture/birthday_cake_3d.jpg
 public/picture/*
 !public/picture/birthday_cake_3d.jpg
